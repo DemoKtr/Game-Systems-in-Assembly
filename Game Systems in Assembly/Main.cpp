@@ -1,10 +1,16 @@
 #include <iostream>
 #include <chrono>
 
+#include "Timer.h"
+
 int main() {
 
 	//start timer
-	std::chrono::high_resolution_clock::time_point start1 = std::chrono::high_resolution_clock::now();
+	
+	Timer* t1 = new Timer();
+	Timer* t2 = new Timer();
+
+	t1->start_timer();
 	int result1 = 0;
 
 	__asm
@@ -14,18 +20,18 @@ int main() {
 		add eax,ebx
 		mov result1,eax
 	}
-
-	std::chrono::high_resolution_clock::time_point end1 = std::chrono::high_resolution_clock::now();
-	std::chrono::nanoseconds duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end1 - start1);
-	std::cout << "Time: " << duration.count() / 1000000.0 << " ms" << std::endl;
+	t1->stop_timer();
+	t1->display_timer();
 	std::cout << result1 << std::endl;
 	//////////////////////////
-	std::chrono::high_resolution_clock::time_point start2 = std::chrono::high_resolution_clock::now();
+	t2->start_timer();
 	int result2 = 0;
 	result2 = 2 + 3;
-	std::chrono::high_resolution_clock::time_point end2 = std::chrono::high_resolution_clock::now();
-	duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end2 - start2);
-	std::cout << "Time: " << duration.count() / 1000000.0 << " ms" << std::endl;
+	t2->stop_timer();
+	t2->display_timer();
+	
 	std::cout << result2 << std::endl;
-	return 0;
+	delete t1;
+	delete t2;
+	return result1;
 }
