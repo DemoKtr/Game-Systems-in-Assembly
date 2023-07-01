@@ -2,36 +2,20 @@
 #include <chrono>
 
 #include "Timer.h"
+#include "Vector2.h"
+#include "MathEngine.h"
 
 int main() {
 
 	//start timer
+	Vector2* v1 = new Vector2(-3, -2);
+	Vector2* v2 = new Vector2(2,-2);
+	Vector2* v3 = new Vector2(2,2);
+	int b=-2;
+	MathEngine mk;
+	b = mk.rectangular(v1, v2, v3);
+	std::cout << b << std::endl;
 	
-	Timer* t1 = new Timer();
-	Timer* t2 = new Timer();
 
-	t1->start_timer();
-	int result1 = 0;
-
-	__asm
-	{
-		mov eax,2
-		mov ebx,3
-		add eax,ebx
-		mov result1,eax
-	}
-	t1->stop_timer();
-	t1->display_timer();
-	std::cout << result1 << std::endl;
-	//////////////////////////
-	t2->start_timer();
-	int result2 = 0;
-	result2 = 2 + 3;
-	t2->stop_timer();
-	t2->display_timer();
-	
-	std::cout << result2 << std::endl;
-	delete t1;
-	delete t2;
-	return result1;
+	return 0;
 }
