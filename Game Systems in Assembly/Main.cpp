@@ -14,7 +14,7 @@ int main() {
 	int b=-2;
 	MathEngine mk;
 	b = mk.rectangular(v1, v2, v3);
-	std::cout << b << std::endl;
+	std::cout << b<< std::endl;
 	
 
 	return 0;
