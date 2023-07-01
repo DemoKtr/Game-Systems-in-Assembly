@@ -20,7 +20,7 @@ Vector2::~Vector2() {
 
 }
 
-float Vector2::Distance(Vector2* v1)
+float Vector2::Distance_asm(Vector2* v1)
 {
 	float a2 = v1->getX();
 	float b2 = v1->getY();
@@ -43,6 +43,12 @@ float Vector2::Distance(Vector2* v1)
 
 	}
 	return distance;
+}
+
+float Vector2::Distance(Vector2* v1)
+{
+	float result = (float)sqrt((this->x+v1->getX())*(this->x + v1->getX())+ (this->y + v1->getY()) * (this->y + v1->getY()));
+	return 0.0f;
 }
 
 float Vector2::getX()
