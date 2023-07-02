@@ -38,13 +38,7 @@ int main() {
 	v1v3 *= v1v3;
 	v2v3 *= v2v3;
 
-	if (v1v2 + v1v3 - v2v3 > -0.01f || v1v2 + v1v3 - v2v3 < 0.01f)
-		std::cout << "legit" << std::endl;
-	else if(v1v2+v2v3-v1v3 > -0.01f || v1v2 + v2v3 - v1v3 <0.01f)
-		std::cout << "legit" << std::endl;
-	else if (v1v3 + v2v3 - v1v2 > -0.01f || v1v3 + v2v3 - v1v2 < 0.01f)
-		std::cout << "legit" << std::endl;
-	else std::cout << "chuja" << std::endl;
+	
 	t2->stop_timer();
 	t2->display_timer();
 	return 0;
