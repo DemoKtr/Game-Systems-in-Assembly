@@ -1,4 +1,5 @@
 #include "Vector3.h"
+#include "Timer.h"
 
 Vector3::Vector3()
 {
@@ -21,27 +22,25 @@ Vector3::~Vector3()
 
 void Vector3::add(Vector3 w1)
 {
+	
 	this->x = x + w1.getX();
 	this->y = y + w1.getY();
 	this->z = z + w1.getZ();
-	
+
 }
 
-void Vector3::add_asm(Vector3 w1)
+void Vector3::add_asm(const Vector3& w1)
 {
-	float* kk = &this->x;
 	__asm {
-		movaps  xmm0, [kk]        // xmm0 = wartoœæ x dla this
-		addss xmm0, [w1]          // xmm0 += wartoœæ x dla w1
-		movss[this], xmm0        // zapisz wynik xmm0 do this->x
+		mov ecx, this; Adres obiektu Vector3(this)
+		mov edx, w1; Adres obiektu Vector3 w1
 
-		movss xmm1, [this + 4]    // xmm1 = wartoœæ y dla this
-		addss xmm1, [w1 + 4]      // xmm1 += wartoœæ y dla w1
-		movss[this + 4], xmm1    // zapisz wynik xmm1 do this->y
+		movups xmm0, [ecx]; Wczytaj sk³adowe x, y, z do xmm0
+		movups xmm1, [edx]; Wczytaj sk³adowe x, y, z z w1 do xmm1
 
-		movss xmm2, [this + 8]    // xmm2 = wartoœæ z dla this
-		addss xmm2, [w1 + 8]      // xmm2 += wartoœæ z dla w1
-		movss[this + 8], xmm2    // zapisz wynik xmm2 do this->z
+		addps xmm0, xmm1; Dodaj xmm0 i xmm1
+
+		movups[ecx], xmm0; Zapisz wynik z powrotem do sk³adowych x, y, z
 	}
 }
 
@@ -52,11 +51,41 @@ void Vector3::sub(Vector3 w1)
 	this->z -= w1.getZ();
 }
 
+void Vector3::sub_asm(const Vector3& w1)
+{
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		mov edx, w1; Adres obiektu Vector3 w1
+
+		movups xmm0, [ecx]; Wczytaj sk³adowe x, y, z do xmm0
+		movups xmm1, [edx]; Wczytaj sk³adowe x, y, z z w1 do xmm1
+
+		subps xmm0, xmm1; Odejmij xmm1 od xmm0
+
+		movups[ecx], xmm0; Zapisz wynik z powrotem do sk³adowych x, y, z
+	}
+}
+
 void Vector3::mul(Vector3 w1)
 {
 	this->x *= w1.getX();
 	this->y *= w1.getY();
 	this->z *= w1.getZ();
+}
+
+void Vector3::mul_asm(const Vector3& w1)
+{
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		mov edx, w1; Adres obiektu Vector3 w1
+
+		movups xmm0, [ecx]; Wczytaj sk³adowe x, y, z do xmm0
+		movups xmm1, [edx]; Wczytaj sk³adowe x, y, z z w1 do xmm1
+
+		mulps xmm0, xmm1; Dodaj xmm0 i xmm1
+
+		movups[ecx], xmm0; Zapisz wynik z powrotem do sk³adowych x, y, z
+	}
 }
 
 void Vector3::mul(float value)
