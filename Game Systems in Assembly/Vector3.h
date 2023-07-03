@@ -21,7 +21,7 @@ public:
 	void mul(float value);
 	void mul_asm(const float& value);
 	void div(float value);
-	void div_asm(float value);
+	void div_asm(const float& value);
 	void normalize();
 	void normalize_asm();
 	float lenght();

@@ -16,7 +16,7 @@ int main() {
 	*/
 	Vector3* w1 = new Vector3(2, 3, 4);
 	std::cout << "Assembler:" << std::endl;
-	w1->mul_asm(1.1);
+	w1->div_asm(2);
 	w1->write();
 	return 0;
 }
