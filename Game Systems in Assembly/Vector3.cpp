@@ -95,6 +95,23 @@ void Vector3::mul(float value)
 	this->z *= value;
 }
 
+void Vector3::mul_asm(const float& value)
+{
+	Vector3* w1 = new Vector3(value, value, value);
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		mov edx, w1; Wczytaj wartoœæ value do xmm0
+
+		movups xmm0, [ecx]; Wczytaj sk³adowe x, y, z do xmm0
+		movups xmm1, [edx]; Wczytaj sk³adowe x, y, z z w1 do xmm1
+
+		mulps xmm1, xmm0; Pomnó¿ xmm1 przez xmm0
+
+		movaps[ecx], xmm1; Zapisz wynik z powrotem do sk³adowych x, y, z
+	}
+	delete w1;
+}
+
 void Vector3::div(float value)
 {
 	this->x /= value;

@@ -19,7 +19,7 @@ public:
 	void mul(Vector3 w1);
 	void mul_asm(const Vector3& w1);
 	void mul(float value);
-	void mul_asm(float value);
+	void mul_asm(const float& value);
 	void div(float value);
 	void div_asm(float value);
 	void normalize();

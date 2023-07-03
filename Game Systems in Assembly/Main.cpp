@@ -15,13 +15,8 @@ int main() {
 	w1->write();
 	*/
 	Vector3* w1 = new Vector3(2, 3, 4);
-	std::cout << "C++ (ten gorszy):" << std::endl;
-	Vector3 w2(1, 1, 2);
-	w1->mul(w2);
-	w1->write();
-	w1=new Vector3(2, 3, 4);
 	std::cout << "Assembler:" << std::endl;
-	w1->mul_asm(w2);
+	w1->mul_asm(1.1);
 	w1->write();
 	return 0;
 }
