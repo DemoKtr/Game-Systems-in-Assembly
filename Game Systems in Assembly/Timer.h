@@ -24,7 +24,7 @@ public:
 		  this->start = std::chrono::high_resolution_clock::now();
 }
 	  void stop_timer() {
-		  this->stop = std::chrono::high_resolution_clock::now();;
+		  stop = std::chrono::high_resolution_clock::now();
 	  }
 	  void display_timer() {
 		  std::chrono::nanoseconds duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);

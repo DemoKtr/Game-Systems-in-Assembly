@@ -238,14 +238,14 @@ Vector3 Vector3::crossproduct(Vector3 w1)
 	return Vector3();
 }
 
-Vector3 Vector3::crossproduct_asm(const Vector3& w1)
+void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 {
-	Vector3* result = new Vector3();
+
 	__asm
 	{
-		mov ecx, this; Adres obiektu Vector3(this)
-		mov edx, w1; Adres obiektu Vector3 w1
-		mov ebx, result
+		mov ecx, w1; Adres obiektu Vector3(this)
+		mov edx, w2; Adres obiektu Vector3 w1
+		mov ebx, this
 
 		movups xmm2, [ecx + 4]
 		movups xmm1, [edx + 8]
@@ -281,8 +281,6 @@ Vector3 Vector3::crossproduct_asm(const Vector3& w1)
 
 	}
 
-
-	return *result;
 }
 float Vector3::getX()
 {
@@ -329,5 +327,5 @@ float Vector3::getZ_asm()
 }
 void Vector3::write()
 {
-	std::cout << "X: " << this->x << " Y:" << this->y << " Z: " << this->z << std::endl;
+	std::cout << "X: " << this->getX() << " Y:" << this->getY() << " Z: " << this->getZ() << std::endl;
 }

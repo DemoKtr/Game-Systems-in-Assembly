@@ -29,7 +29,7 @@ public:
 	float dotproduct(Vector3 w1);
 	float dotproduct_asm(const Vector3& w1);
 	Vector3 crossproduct(Vector3 w1);
-	Vector3 crossproduct_asm(const Vector3& w1);
+	void crossproduct_asm(const Vector3& w1, const Vector3& w2);
 	
 
 	float getX();
