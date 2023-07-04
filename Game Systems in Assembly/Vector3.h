@@ -27,7 +27,7 @@ public:
 	float lenght();
 	float lenght_asm();
 	float dotproduct(Vector3 w1);
-	float dotproduct_asm(Vector3 w1);
+	float dotproduct_asm(const Vector3& w1);
 	Vector3 crossproduct(Vector3 w1);
 	Vector3 crossproduct_asm(Vector3 w1);
 	

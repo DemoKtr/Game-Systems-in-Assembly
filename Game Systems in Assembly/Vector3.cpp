@@ -123,15 +123,15 @@ void Vector3::div_asm(const float& value)
 {
 	Vector3* w1 = new Vector3(value, value, value);
 	__asm {
-		mov ecx, this; Adres obiektu Vector3(this)
-		mov edx, w1; Wczytaj wartoœæ value do xmm0
+		mov ecx, this
+		mov edx, w1
 
-		movups xmm0, [ecx]; Wczytaj sk³adowe x, y, z do xmm0
-		movups xmm1, [edx]; Wczytaj sk³adowe x, y, z z w1 do xmm1
+		movups xmm0, [ecx]
+		movups xmm1, [edx]
 
-		divps xmm0, xmm1; Pomnó¿ xmm1 przez xmm0
+		divps xmm0, xmm1
 
-		movups[ecx], xmm0; Zapisz wynik z powrotem do sk³adowych x, y, z
+		movups[ecx], xmm0
 	}
 	delete w1;
 }
@@ -142,6 +142,30 @@ void Vector3::normalize()
 	float len = this->lenght();
 	if (len != 0.0) {
 		div(len);
+	}
+}
+
+void Vector3::normalize_asm()
+{
+	float len = this->lenght_asm();
+	__asm 
+	{
+		mov ecx,this
+		mov eax,len
+		cmp eax,0
+		jne calculate
+		jmp end
+
+		calculate:
+		movups xmm0,[ecx]
+		movups xmm1,len
+		shufps xmm1,xmm1,0
+		divps xmm0,xmm1
+		jmp end
+
+		end:
+		movups[ecx], xmm0
+
 	}
 }
 
@@ -156,12 +180,12 @@ float Vector3::lenght_asm()
 {
 	float result;
 	__asm {
-		mov ecx, this; Adres obiektu Vector3(this)
+		mov ecx, this
 		
 
-		movups xmm0, [ecx]; Wczytaj wartoœæ sk³adowej x do rejestru eax
+		movups xmm0, [ecx]
 		mulps xmm0,xmm0
-		movups xmm1, [ecx + 4]; Wczytaj wartoœæ sk³adowej y do rejestru ebx
+		movups xmm1, [ecx + 4]
 		mulps xmm1, xmm1
 		movups xmm2, [ecx + 8]
 		mulps xmm2, xmm2
@@ -180,6 +204,32 @@ float Vector3::lenght_asm()
 float Vector3::dotproduct(Vector3 w1)
 {
 	return this->x*w1.getX() + this->y*w1.getY() +this->z*w1.getZ();
+}
+
+float Vector3::dotproduct_asm(const Vector3& w1)
+{
+	float result;
+	__asm
+	{
+		mov ecx, this
+		mov edx, w1
+		movups xmm0, [ecx]
+		movups xmm1, [edx]
+		mulps xmm0, xmm1
+
+		movups xmm1, [ecx + 4]
+		movups xmm2, [edx + 4]
+		mulps xmm1, xmm2
+		addps xmm0, xmm1
+
+		movups xmm1, [ecx + 8]
+		movups xmm2, [edx + 8]
+		mulps xmm1, xmm2
+		addps xmm0, xmm1
+
+		movss result, xmm0
+	}
+	return result;
 }
 
 Vector3 Vector3::crossproduct(Vector3 w1)

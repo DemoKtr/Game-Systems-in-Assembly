@@ -15,15 +15,11 @@ int main() {
 	w1->write();
 	*/
 	Vector3* w1 = new Vector3(2, 3, 4);
+	Vector3 w2(4, 6, 1);
 	Timer* t = new Timer();
-	std::cout << "Jebane C++" << std::endl;
+
 	t->start_timer();
-	 w1->getZ();
-	t->stop_timer();
-	t->display_timer();
-	std::cout << "LoveAssembler<3: " << std::endl;
-	t->start_timer();
-	w1->getZ_asm();
+	w1->dotproduct_asm(w2);
 	t->stop_timer();
 	t->display_timer();
 	return 0;
