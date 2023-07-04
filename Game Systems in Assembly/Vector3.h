@@ -33,8 +33,11 @@ public:
 	
 
 	float getX();
+	float getX_asm();
 	float getY();
+	float getY_asm();
 	float getZ();
+	float getZ_asm();
 	void write();
 };
 

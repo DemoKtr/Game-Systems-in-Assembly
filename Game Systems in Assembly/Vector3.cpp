@@ -82,7 +82,7 @@ void Vector3::mul_asm(const Vector3& w1)
 		movups xmm0, [ecx]; Wczytaj sk³adowe x, y, z do xmm0
 		movups xmm1, [edx]; Wczytaj sk³adowe x, y, z z w1 do xmm1
 
-		mulps xmm0, xmm1; Dodaj xmm0 i xmm1
+		mulps xmm0, xmm1; 
 
 		movups[ecx], xmm0; Zapisz wynik z powrotem do sk³adowych x, y, z
 	}
@@ -152,6 +152,31 @@ float Vector3::lenght()
 	return sqrt(this->x*this->x+ this->y * this->y + this->z * this->z);
 }
 
+float Vector3::lenght_asm()
+{
+	float result;
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		
+
+		movups xmm0, [ecx]; Wczytaj wartoœæ sk³adowej x do rejestru eax
+		mulps xmm0,xmm0
+		movups xmm1, [ecx + 4]; Wczytaj wartoœæ sk³adowej y do rejestru ebx
+		mulps xmm1, xmm1
+		movups xmm2, [ecx + 8]
+		mulps xmm2, xmm2
+		addps xmm0, xmm1
+		addps xmm0, xmm2
+		sqrtss xmm0,xmm0
+
+		
+		
+		movss result,xmm0
+		
+	}
+	return result;
+}
+
 float Vector3::dotproduct(Vector3 w1)
 {
 	return this->x*w1.getX() + this->y*w1.getY() +this->z*w1.getZ();
@@ -165,14 +190,45 @@ Vector3 Vector3::crossproduct(Vector3 w1)
 float Vector3::getX()
 {
 	return this->x;
+	
+}
+float Vector3::getX_asm()
+{
+	float result;
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		movups xmm0, [ecx]
+		movss result,xmm0
+	}
+	return result;
 }
 float Vector3::getY()
 {
 	return this->y;
 }
+float Vector3::getY_asm()
+{
+	float result;
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		movups xmm0, [ecx + 4]
+		movss result, xmm0
+	}
+	return result;
+}
 float Vector3::getZ()
 {
 	return this->z;
+}
+float Vector3::getZ_asm()
+{
+	float result;
+	__asm {
+		mov ecx, this; Adres obiektu Vector3(this)
+		movups xmm0, [ecx + 8]
+		movss result, xmm0
+	}
+	return result;
 }
 void Vector3::write()
 {
