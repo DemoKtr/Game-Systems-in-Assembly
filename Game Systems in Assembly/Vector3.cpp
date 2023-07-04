@@ -17,7 +17,7 @@ Vector3::Vector3(float x, float y, float z)
 
 Vector3::~Vector3()
 {
-
+	std::cout << "Zwolnilemsie" << std::endl;
 }
 
 void Vector3::add(Vector3 w1)
@@ -240,11 +240,12 @@ Vector3 Vector3::crossproduct(Vector3 w1)
 
 void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 {
-
+	const Vector3* pW1 = &w1;
+	const Vector3* pW2 = &w2;
 	__asm
 	{
-		mov ecx, w1; Adres obiektu Vector3(this)
-		mov edx, w2; Adres obiektu Vector3 w1
+		mov ecx, pW1; Adres obiektu Vector3(this)
+		mov edx, pW2; Adres obiektu Vector3 w1
 		mov ebx, this
 
 		movups xmm2, [ecx + 4]
@@ -265,22 +266,21 @@ void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 		subps xmm2, xmm1
 		movups[ebx + 4], xmm2
 
-		xorps xmm2,xmm2
-		xorps xmm1,xmm1
-		xorps xmm0,xmm0
-
 		movups xmm2, [ecx]
 		movups xmm1, [edx + 4]
-		mulps xmm2,xmm1
+		mulps xmm2, xmm1
 		movups xmm1, [ecx + 4]
 		movups xmm0, [edx]
 		mulps xmm1, xmm0
 		subps xmm2, xmm1
-		movups[ebx + 8],xmm2
-		
+		movups[ebx + 8], xmm2
 
 	}
-
+	pW1 = nullptr;
+	
+	pW2 = nullptr;
+	delete pW1;
+	delete pW2;
 }
 float Vector3::getX()
 {
@@ -327,5 +327,5 @@ float Vector3::getZ_asm()
 }
 void Vector3::write()
 {
-	std::cout << "X: " << this->getX() << " Y:" << this->getY() << " Z: " << this->getZ() << std::endl;
+	std::cout << "X: " << x << " Y:" << y << " Z: " << z << std::endl;
 }
