@@ -14,12 +14,13 @@ int main() {
 	w1->add_asm(w2);
 	w1->write();
 	*/
-	Vector3* w1 = new Vector3(2, 3, 4);
+	Vector3* w1 = new Vector3(4, 3, 4);
 	Vector3 w2(4, 6, 1);
 	Timer* t = new Timer();
 
 	t->start_timer();
-	w1->dotproduct_asm(w2);
+	Vector3 w = w1->crossproduct_asm(w2);
+	w.write();
 	t->stop_timer();
 	t->display_timer();
 	return 0;

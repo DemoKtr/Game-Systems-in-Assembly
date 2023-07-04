@@ -178,7 +178,7 @@ float Vector3::lenght()
 
 float Vector3::lenght_asm()
 {
-	float result;
+	float result=0;
 	__asm {
 		mov ecx, this
 		
@@ -208,7 +208,7 @@ float Vector3::dotproduct(Vector3 w1)
 
 float Vector3::dotproduct_asm(const Vector3& w1)
 {
-	float result;
+	float result = 0;
 	__asm
 	{
 		mov ecx, this
@@ -234,9 +234,56 @@ float Vector3::dotproduct_asm(const Vector3& w1)
 
 Vector3 Vector3::crossproduct(Vector3 w1)
 {
+	Vector3 obj(this->getY()*w1.getZ() - this->getZ()*w1.getY(), this->getZ()*w1.x-this->getX()*w1.getZ(), this->getX()*w1.getY()-this->getY()*this->getX());
 	return Vector3();
 }
 
+Vector3 Vector3::crossproduct_asm(const Vector3& w1)
+{
+	Vector3* result = new Vector3();
+	__asm
+	{
+		mov ecx, this; Adres obiektu Vector3(this)
+		mov edx, w1; Adres obiektu Vector3 w1
+		mov ebx, result
+
+		movups xmm2, [ecx + 4]
+		movups xmm1, [edx + 8]
+		mulps xmm2, xmm1
+		movups xmm1, [ecx + 8]
+		movups xmm0, [edx + 4]
+		mulps xmm1, xmm0
+		subps xmm2, xmm1
+		movups[ebx], xmm2
+
+		movups xmm2,[ecx+8]
+		movups xmm1,[edx]
+		mulps xmm2, xmm1
+		movups xmm1, [ecx]
+		movups xmm0, [edx + 8]
+		mulps xmm1, xmm0
+		subps xmm2, xmm1
+		movups[ebx + 4], xmm2
+
+		xorps xmm2,xmm2
+		xorps xmm1,xmm1
+		xorps xmm0,xmm0
+
+		movups xmm2, [ecx]
+		movups xmm1, [edx + 4]
+		mulps xmm2,xmm1
+		movups xmm1, [ecx + 4]
+		movups xmm0, [edx]
+		mulps xmm1, xmm0
+		subps xmm2, xmm1
+		movups[ebx + 8],xmm2
+		
+
+	}
+
+
+	return *result;
+}
 float Vector3::getX()
 {
 	return this->x;
@@ -244,7 +291,7 @@ float Vector3::getX()
 }
 float Vector3::getX_asm()
 {
-	float result;
+	float result=0;
 	__asm {
 		mov ecx, this; Adres obiektu Vector3(this)
 		movups xmm0, [ecx]
@@ -258,7 +305,7 @@ float Vector3::getY()
 }
 float Vector3::getY_asm()
 {
-	float result;
+	float result=0;
 	__asm {
 		mov ecx, this; Adres obiektu Vector3(this)
 		movups xmm0, [ecx + 4]
@@ -272,7 +319,7 @@ float Vector3::getZ()
 }
 float Vector3::getZ_asm()
 {
-	float result;
+	float result=0;
 	__asm {
 		mov ecx, this; Adres obiektu Vector3(this)
 		movups xmm0, [ecx + 8]
