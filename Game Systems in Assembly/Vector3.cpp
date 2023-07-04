@@ -17,7 +17,7 @@ Vector3::Vector3(float x, float y, float z)
 
 Vector3::~Vector3()
 {
-	std::cout << "Zwolnilemsie" << std::endl;
+
 }
 
 void Vector3::add(Vector3 w1)
@@ -243,11 +243,11 @@ void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 	const Vector3* pW1 = &w1;
 	const Vector3* pW2 = &w2;
 	__asm
-	{
+	{ xor ebx, ebx
 		mov ecx, pW1; Adres obiektu Vector3(this)
 		mov edx, pW2; Adres obiektu Vector3 w1
 		mov ebx, this
-
+		
 		movups xmm2, [ecx + 4]
 		movups xmm1, [edx + 8]
 		mulps xmm2, xmm1
@@ -255,7 +255,8 @@ void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 		movups xmm0, [edx + 4]
 		mulps xmm1, xmm0
 		subps xmm2, xmm1
-		movups[ebx], xmm2
+		movups xmm5,xmm2
+		
 
 		movups xmm2,[ecx+8]
 		movups xmm1,[edx]
@@ -264,7 +265,8 @@ void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 		movups xmm0, [edx + 8]
 		mulps xmm1, xmm0
 		subps xmm2, xmm1
-		movups[ebx + 4], xmm2
+		movups xmm4,xmm2
+
 
 		movups xmm2, [ecx]
 		movups xmm1, [edx + 4]
@@ -273,7 +275,12 @@ void Vector3::crossproduct_asm(const Vector3& w1,const Vector3& w2)
 		movups xmm0, [edx]
 		mulps xmm1, xmm0
 		subps xmm2, xmm1
-		movups[ebx + 8], xmm2
+		movups xmm3,xmm2
+		xorps xmm2,xmm2
+		movups[ebx], xmm5
+		movups[ebx+4], xmm4
+		movups[ebx + 8], xmm3
+		movups[ebx + 12], xmm2
 
 	}
 	pW1 = nullptr;

@@ -15,7 +15,8 @@ int main() {
 	Vector3 *w= new Vector3(1,1,1);
 
 	w->crossproduct_asm(w1, w2);
-	w->write();
+	w1.add_asm(*w);
+	std::cout << "X: " << w1.getX() << " Y:" << w1.getY() << " Z: " << w1.getZ() << std::endl;
 	w = nullptr;
 	delete w;
 	return 0;
